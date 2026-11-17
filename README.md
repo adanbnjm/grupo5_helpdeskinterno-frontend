@@ -1,32 +1,61 @@
-# React + TypeScript + Vite
+# Help Desk Interno - Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+Frontend web del sistema Help Desk Interno desarrollado con React, TypeScript y Vite.
 
-Currently, two official plugins are available:
+## Requisitos
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- Node.js
+- npm
+- Git
 
-## React Compiler
+## Instalacion
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Clonar el repositorio:
 
-## Expanding the Oxlint configuration
-
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
-
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+```bash
+git clone https://github.com/adanbnjm/grupo5_helpdeskinterno-frontend.git
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+Entrar a la carpeta:
+
+```bash
+cd grupo5_helpdeskinterno-frontend
+```
+
+Instalar las dependencias:
+
+```bash
+npm ci
+```
+
+## Ejecutar el proyecto
+
+```bash
+npm run dev
+```
+
+Abrir en el navegador la direccion que muestra la terminal.
+
+## Comandos disponibles
+
+| Comando           | Funcion                             |
+| ----------------- | ----------------------------------- |
+| `npm run dev`     | Iniciar el servidor de desarrollo   |
+| `npm run build`   | Comprobar y construir el proyecto   |
+| `npm run lint`    | Revisar el codigo                   |
+| `npm run preview` | Previsualizar la version construida |
+
+## Actualizar el proyecto
+
+Para obtener los ultimos cambios de la rama principal:
+
+```bash
+git pull origin main
+```
+
+## Tecnologias
+
+- React
+- TypeScript
+- Vite
+- Oxlint
