@@ -6,6 +6,7 @@ import { RutaProtegida } from "./componentes/Auth/RutaProtegida";
 import { PaginaTickets } from "./pages/PaginaTickets";
 import { PaginaRegistro } from "./pages/PaginaRegistro";
 import { PaginaUsuarios } from "./pages/PaginaUsuarios";
+import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
 
 function App() {
   return (
@@ -14,18 +15,25 @@ function App() {
       <Route path="/registro" element={<PaginaRegistro />} />
 
       <Route element={<RutaProtegida />}>
-        <Route path="/dashboard" element={<PaginaDashboard />} />
+        <Route element={<LayoutPrincipal />}>
+          <Route path="/dashboard" element={<PaginaDashboard />} />
+
+          <Route
+            element={
+              <RutaProtegida allowedRoles={["ADMIN", "AGENTE", "EMPLEADO"]} />
+            }
+          >
+            <Route path="/tickets" element={<PaginaTickets />} />
+          </Route>
+
+          <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
+            <Route path="/usuarios" element={<PaginaUsuarios />} />
+          </Route>
+        </Route>
       </Route>
 
-      <Route element={<RutaProtegida allowedRoles={["ADMIN", "AGENTE"]} />}>
-        <Route path="/tickets" element={<PaginaTickets />} />
-      </Route>
-      <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
-        <Route path="/usuarios" element={<PaginaUsuarios />} />
-      </Route>
-
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

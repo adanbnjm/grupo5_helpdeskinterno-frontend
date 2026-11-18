@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
-import { ticketService } from '../services/ticketService';
-import { useAuthStore } from '../store/useAuthStore';
-import { BadgeEstado, BadgePrioridad } from '../componentes/Tickets/Badges';
-import type { MetaPaginacion, Ticket } from '../types/tickets';
+import { useEffect, useState } from "react";
+import { AxiosError } from "axios";
+import { ticketService } from "../services/ticketService";
+import { useAuthStore } from "../store/useAuthStore";
+import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
+import type { MetaPaginacion, Ticket } from "../types/tickets";
 
 const LIMITE = 10;
 
@@ -21,7 +21,9 @@ export const PaginaTickets = () => {
   useEffect(() => {
     ticketService
       .listarCategorias()
-      .then((lista) => setCategorias(Object.fromEntries(lista.map((c) => [c.id, c.nombre]))))
+      .then((lista) =>
+        setCategorias(Object.fromEntries(lista.map((c) => [c.id, c.nombre]))),
+      )
       .catch(() => setCategorias({}));
   }, []);
 
@@ -37,7 +39,11 @@ export const PaginaTickets = () => {
       } catch (err) {
         const e = err as AxiosError<{ message?: string | string[] }>;
         const mensaje = e.response?.data?.message;
-        setError(Array.isArray(mensaje) ? mensaje[0] : mensaje || 'No se pudieron cargar los tickets.');
+        setError(
+          Array.isArray(mensaje)
+            ? mensaje[0]
+            : mensaje || "No se pudieron cargar los tickets.",
+        );
       } finally {
         setCargando(false);
       }
@@ -45,28 +51,34 @@ export const PaginaTickets = () => {
     cargar();
   }, [pagina]);
 
-  const esEmpleado = user?.rol === 'EMPLEADO';
+  const esEmpleado = user?.rol === "EMPLEADO";
   const totalPaginas = meta?.totalPages ?? 1;
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:p-8">
+    <div>
       <div className="max-w-6xl mx-auto">
         <div className="mb-6">
           <h1 className="text-2xl font-bold text-slate-800">
-            {esEmpleado ? 'Mis tickets' : 'Todos los tickets'}
+            {esEmpleado ? "Mis tickets" : "Todos los tickets"}
           </h1>
           <p className="text-sm text-slate-500 mt-1">
-            {meta ? `${meta.total} ticket${meta.total === 1 ? '' : 's'} en total` : '\u00a0'}
+            {meta
+              ? `${meta.total} ticket${meta.total === 1 ? "" : "s"} en total`
+              : "\u00a0"}
           </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           {cargando ? (
-            <p className="p-8 text-center text-slate-500">Cargando tickets...</p>
+            <p className="p-8 text-center text-slate-500">
+              Cargando tickets...
+            </p>
           ) : error ? (
             <p className="p-8 text-center text-red-600">{error}</p>
           ) : tickets.length === 0 ? (
-            <p className="p-8 text-center text-slate-500">No hay tickets para mostrar.</p>
+            <p className="p-8 text-center text-slate-500">
+              No hay tickets para mostrar.
+            </p>
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -85,7 +97,9 @@ export const PaginaTickets = () => {
                   {tickets.map((t) => (
                     <tr key={t.id} className="hover:bg-slate-50 transition">
                       <td className="px-4 py-3 text-slate-500">{t.id}</td>
-                      <td className="px-4 py-3 font-medium text-slate-800">{t.titulo}</td>
+                      <td className="px-4 py-3 font-medium text-slate-800">
+                        {t.titulo}
+                      </td>
                       <td className="px-4 py-3 text-slate-600">
                         {categorias[t.categoriaId] ?? `#${t.categoriaId}`}
                       </td>
@@ -96,10 +110,14 @@ export const PaginaTickets = () => {
                         <BadgeEstado estado={t.estado} />
                       </td>
                       <td className="px-4 py-3 text-slate-600">
-                        {t.agenteId ? `Agente #${t.agenteId}` : <span className="text-slate-400">Sin asignar</span>}
+                        {t.agenteId ? (
+                          `Agente #${t.agenteId}`
+                        ) : (
+                          <span className="text-slate-400">Sin asignar</span>
+                        )}
                       </td>
                       <td className="px-4 py-3 text-slate-500">
-                        {new Date(t.creadoEn).toLocaleDateString('es-AR')}
+                        {new Date(t.creadoEn).toLocaleDateString("es-AR")}
                       </td>
                     </tr>
                   ))}
