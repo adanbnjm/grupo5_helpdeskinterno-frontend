@@ -5,6 +5,7 @@ import { PaginaDashboard } from "./pages/PaginaDashboard";
 import { RutaProtegida } from "./componentes/Auth/RutaProtegida";
 import { PaginaTickets } from "./pages/PaginaTickets";
 import { PaginaRegistro } from "./pages/PaginaRegistro";
+import { PaginaUsuarios } from "./pages/PaginaUsuarios";
 
 function App() {
   return (
@@ -16,8 +17,11 @@ function App() {
         <Route path="/dashboard" element={<PaginaDashboard />} />
       </Route>
 
-      <Route element={<RutaProtegida allowedRoles={['ADMIN', 'AGENTE']}/>}>
+      <Route element={<RutaProtegida allowedRoles={["ADMIN", "AGENTE"]} />}>
         <Route path="/tickets" element={<PaginaTickets />} />
+      </Route>
+      <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
+        <Route path="/usuarios" element={<PaginaUsuarios />} />
       </Route>
 
       <Route path="/" element={<Navigate to="/login" replace />} />
