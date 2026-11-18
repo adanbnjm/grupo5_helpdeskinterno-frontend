@@ -1,20 +1,20 @@
-import { useState} from 'react';
-import type { FormEvent } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuthStore } from '../store/useAuthStore';
+import { useState } from "react";
+import type { FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useAuthStore } from "../store/useAuthStore";
 
 export const PaginaLogin = () => {
   const navigate = useNavigate();
   const { login, isLoading, error, clearError } = useAuthStore();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const success = await login({ email, password });
     if (success) {
-      navigate('/dashboard');
+      navigate("/dashboard");
     }
   };
 
@@ -83,9 +83,18 @@ export const PaginaLogin = () => {
             disabled={isLoading}
             className="w-full py-2.5 px-4 bg-blue-600 hover:bg-blue-700 disabled:bg-blue-400 text-white font-semibold rounded-lg shadow-sm transition cursor-pointer disabled:cursor-not-allowed"
           >
-            {isLoading ? 'Iniciando sesión...' : 'Iniciar sesión'}
+            {isLoading ? "Iniciando sesión..." : "Iniciar sesión"}
           </button>
         </form>
+        <p className="text-sm text-center text-slate-600 mt-6">
+          ¿No tienes una cuenta?{" "}
+          <Link
+            to="/registro"
+            className="text-blue-600 hover:underline font-semibold"
+          >
+            Regístrate aquí
+          </Link>
+        </p>
       </div>
     </div>
   );
