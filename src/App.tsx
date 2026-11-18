@@ -8,6 +8,7 @@ import { PaginaNuevoTicket } from "./pages/PaginaNuevoTicket";
 import { PaginaDetalleTicket } from "./pages/PaginaDetalleTicket";
 import { PaginaRegistro } from "./pages/PaginaRegistro";
 import { PaginaUsuarios } from "./pages/PaginaUsuarios";
+import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
 
 function App() {
   return (
@@ -25,10 +26,25 @@ function App() {
 
       <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
         <Route path="/usuarios" element={<PaginaUsuarios />} />
+        <Route element={<LayoutPrincipal />}>
+          <Route path="/dashboard" element={<PaginaDashboard />} />
+
+          <Route
+            element={
+              <RutaProtegida allowedRoles={["ADMIN", "AGENTE", "EMPLEADO"]} />
+            }
+          >
+            <Route path="/tickets" element={<PaginaTickets />} />
+          </Route>
+
+          <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
+            <Route path="/usuarios" element={<PaginaUsuarios />} />
+          </Route>
+        </Route>
       </Route>
 
-      <Route path="/" element={<Navigate to="/login" replace />} />
-      <Route path="*" element={<Navigate to="/login" replace />} />
+      <Route path="/" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }
