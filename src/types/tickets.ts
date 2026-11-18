@@ -13,6 +13,26 @@ export interface Ticket {
   creadorId: number;
   agenteId: number | null;
   categoriaId: number;
+  // Relaciones: el backend las incluye en GET /tickets y GET /tickets/:id
+  creador?: UsuarioResumen;
+  agente?: UsuarioResumen | null;
+  categoria?: { id: number; nombre: string };
+}
+
+export interface UsuarioResumen {
+  id: number;
+  nombre: string;
+  email?: string;
+  rol?: string;
+}
+
+// Lo que se manda a POST /tickets
+export interface CrearTicketDto {
+  titulo: string;
+  descripcion: string;
+  prioridad: Prioridad;
+  categoriaId: number;
+  agenteId?: number; // solo ADMIN puede enviarlo
 }
 
 export interface Categoria {

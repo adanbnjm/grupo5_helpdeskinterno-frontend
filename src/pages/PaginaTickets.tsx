@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import { AxiosError } from 'axios';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ticketService } from '../services/ticketService';
 import { useAuthStore } from '../store/useAuthStore';
+import { obtenerMensajeError } from '../lib/errores';
 import { BadgeEstado, BadgePrioridad } from '../componentes/Tickets/Badges';
 import type { MetaPaginacion, Ticket } from '../types/tickets';
 
@@ -9,6 +10,12 @@ const LIMITE = 10;
 
 export const PaginaTickets = () => {
   const user = useAuthStore((state) => state.user);
+  const navigate = useNavigate();
+  const location = useLocation();
+  // Mensaje de éxito que manda PaginaNuevoTicket al redirigir
+  const [aviso, setAviso] = useState<string | null>(
+    (location.state as { mensaje?: string } | null)?.mensaje ?? null,
+  );
 
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [meta, setMeta] = useState<MetaPaginacion | null>(null);
@@ -35,9 +42,7 @@ export const PaginaTickets = () => {
         setTickets(respuesta.data);
         setMeta(respuesta.meta);
       } catch (err) {
-        const e = err as AxiosError<{ message?: string | string[] }>;
-        const mensaje = e.response?.data?.message;
-        setError(Array.isArray(mensaje) ? mensaje[0] : mensaje || 'No se pudieron cargar los tickets.');
+        setError(obtenerMensajeError(err, 'No se pudieron cargar los tickets.'));
       } finally {
         setCargando(false);
       }
@@ -45,20 +50,42 @@ export const PaginaTickets = () => {
     cargar();
   }, [pagina]);
 
+  // El aviso se borra solo a los 4 segundos y se limpia el state para que no reaparezca al recargar
+  useEffect(() => {
+    if (!aviso) return;
+    navigate(location.pathname, { replace: true, state: null });
+    const t = setTimeout(() => setAviso(null), 4000);
+    return () => clearTimeout(t);
+  }, [aviso, navigate, location.pathname]);
+
   const esEmpleado = user?.rol === 'EMPLEADO';
   const totalPaginas = meta?.totalPages ?? 1;
 
   return (
     <div className="min-h-screen bg-slate-100 p-4 sm:p-8">
       <div className="max-w-6xl mx-auto">
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">
-            {esEmpleado ? 'Mis tickets' : 'Todos los tickets'}
-          </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            {meta ? `${meta.total} ticket${meta.total === 1 ? '' : 's'} en total` : '\u00a0'}
-          </p>
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+          <div>
+            <h1 className="text-2xl font-bold text-slate-800">
+              {esEmpleado ? 'Mis tickets' : 'Todos los tickets'}
+            </h1>
+            <p className="text-sm text-slate-500 mt-1">
+              {meta ? `${meta.total} ticket${meta.total === 1 ? '' : 's'} en total` : '\u00a0'}
+            </p>
+          </div>
+          <Link
+            to="/tickets/nuevo"
+            className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition"
+          >
+            + Nuevo ticket
+          </Link>
         </div>
+
+        {aviso && (
+          <div className="mb-4 p-3 rounded-lg bg-green-50 border border-green-200 text-green-700 text-sm">
+            {aviso}
+          </div>
+        )}
 
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           {cargando ? (
@@ -83,11 +110,15 @@ export const PaginaTickets = () => {
                 </thead>
                 <tbody className="divide-y divide-slate-100">
                   {tickets.map((t) => (
-                    <tr key={t.id} className="hover:bg-slate-50 transition">
+                    <tr
+                      key={t.id}
+                      onClick={() => navigate(`/tickets/${t.id}`)}
+                      className="hover:bg-slate-50 transition cursor-pointer"
+                    >
                       <td className="px-4 py-3 text-slate-500">{t.id}</td>
                       <td className="px-4 py-3 font-medium text-slate-800">{t.titulo}</td>
                       <td className="px-4 py-3 text-slate-600">
-                        {categorias[t.categoriaId] ?? `#${t.categoriaId}`}
+                        {t.categoria?.nombre ?? categorias[t.categoriaId] ?? `#${t.categoriaId}`}
                       </td>
                       <td className="px-4 py-3">
                         <BadgePrioridad prioridad={t.prioridad} />
@@ -96,7 +127,8 @@ export const PaginaTickets = () => {
                         <BadgeEstado estado={t.estado} />
                       </td>
                       <td className="px-4 py-3 text-slate-600">
-                        {t.agenteId ? `Agente #${t.agenteId}` : <span className="text-slate-400">Sin asignar</span>}
+                        {t.agente?.nombre ??
+                          (t.agenteId ? `Agente #${t.agenteId}` : <span className="text-slate-400">Sin asignar</span>)}
                       </td>
                       <td className="px-4 py-3 text-slate-500">
                         {new Date(t.creadoEn).toLocaleDateString('es-AR')}
