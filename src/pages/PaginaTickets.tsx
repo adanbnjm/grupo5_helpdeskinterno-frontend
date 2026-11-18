@@ -11,6 +11,7 @@ import { ticketService } from "../services/ticketService";
 import { useAuthStore } from "../store/useAuthStore";
 import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
 import type { MetaPaginacion, Ticket } from "../types/tickets";
+import { Link } from "react-router-dom";
 
 const LIMITE = 10;
 
@@ -146,7 +147,14 @@ I     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                     >
                       <td className="px-4 py-3 text-slate-500">{t.id}</td>
                       <td className="px-4 py-3 font-medium text-slate-800">
-                        {t.titulo}
+                        {
+                          <Link
+                            to={`/tickets/${t.id}/comentarios`}
+                            className="text-blue-700 hover:underline"
+                          >
+                            {t.titulo}
+                          </Link>
+                        }
                       </td>
                       <td className="px-4 py-3 text-slate-600">
                         {t.categoria?.nombre ?? categorias[t.categoriaId] ?? `#${t.categoriaId}`}

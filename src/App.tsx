@@ -9,6 +9,7 @@ import { PaginaDetalleTicket } from "./pages/PaginaDetalleTicket";
 import { PaginaRegistro } from "./pages/PaginaRegistro";
 import { PaginaUsuarios } from "./pages/PaginaUsuarios";
 import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
+import { PaginaComentarios } from "./pages/PaginaComentarios";
 
 function App() {
   return (
@@ -35,6 +36,10 @@ function App() {
             }
           >
             <Route path="/tickets" element={<PaginaTickets />} />
+            <Route
+              path="/tickets/:id/comentarios"
+              element={<PaginaComentarios />}
+            />
           </Route>
 
           <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
