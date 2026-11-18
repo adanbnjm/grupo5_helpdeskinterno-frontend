@@ -14,6 +14,11 @@ const enlaces = [
     roles: ["ADMIN", "AGENTE", "EMPLEADO"],
   },
   {
+    ruta: "/metricas",
+    texto: "Métricas",
+    roles: ["ADMIN", "AGENTE"],
+  },
+  {
     ruta: "/usuarios",
     texto: "Usuarios",
     roles: ["ADMIN"],

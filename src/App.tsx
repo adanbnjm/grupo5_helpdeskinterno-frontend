@@ -9,6 +9,7 @@ import { PaginaDetalleTicket } from "./pages/PaginaDetalleTicket";
 import { PaginaRegistro } from "./pages/PaginaRegistro";
 import { PaginaUsuarios } from "./pages/PaginaUsuarios";
 import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
+import { PaginaMetricas } from "./pages/PaginaMetricas";
 import { PaginaComentarios } from "./pages/PaginaComentarios";
 
 function App() {
@@ -28,6 +29,9 @@ function App() {
       <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
         <Route path="/usuarios" element={<PaginaUsuarios />} />
         <Route element={<LayoutPrincipal />}>
+          <Route element={<RutaProtegida allowedRoles={["ADMIN", "AGENTE"]} />}>
+            <Route path="/metricas" element={<PaginaMetricas />} />
+          </Route>
           <Route path="/dashboard" element={<PaginaDashboard />} />
 
           <Route
