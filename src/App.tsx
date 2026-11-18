@@ -14,6 +14,9 @@ function App() {
 
       <Route element={<RutaProtegida />}>
         <Route path="/dashboard" element={<PaginaDashboard />} />
+      </Route>
+
+      <Route element={<RutaProtegida allowedRoles={['ADMIN', 'AGENTE']}/>}>
         <Route path="/tickets" element={<PaginaTickets />} />
       </Route>
 
