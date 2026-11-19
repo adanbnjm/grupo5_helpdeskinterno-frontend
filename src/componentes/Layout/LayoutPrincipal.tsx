@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
+import { CargandoPagina } from "./Carga";
 
 const enlaces = [
   {
@@ -30,12 +31,25 @@ export const LayoutPrincipal = () => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const [menuEnRuta, setMenuEnRuta] = useState<string | null>(null);
+  const [cargando, setCargando] = useState(true);
 
   const rol = user?.rol?.toUpperCase() ?? "";
   const menuAbierto = menuEnRuta === pathname;
   const enlacesVisibles = enlaces.filter((enlace) =>
     enlace.roles.includes(rol),
   );
+
+  useEffect(() => {
+    setCargando(true);
+
+    const timer = window.setTimeout(() => {
+      setCargando(false);
+    }, 1000);
+
+    return () => {
+      window.clearTimeout(timer);
+    };
+  }, [pathname]);
 
   const cerrarSesion = () => {
     setMenuEnRuta(null);
@@ -119,7 +133,7 @@ export const LayoutPrincipal = () => {
         </header>
 
         <main id="contenido-principal" className="p-4 sm:p-6">
-          <Outlet />
+          {cargando ? <CargandoPagina /> : <Outlet />}
         </main>
       </div>
     </div>

@@ -9,6 +9,8 @@ import { PaginaDetalleTicket } from "./pages/PaginaDetalleTicket";
 import { PaginaUsuarios } from "./pages/PaginaUsuarios";
 import { PaginaMetricas } from "./pages/PaginaMetricas";
 import { PaginaComentarios } from "./pages/PaginaComentarios";
+import { PaginaSinPermisos } from "./pages/PaginaSinPermisos";
+import { Pagina404 } from "./pages/Pagina404";
 import { RutaProtegida } from "./componentes/Auth/RutaProtegida";
 import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
 
@@ -19,6 +21,22 @@ function App() {
       <Route path="/registro" element={<PaginaRegistro />} />
 
       <Route element={<RutaProtegida />}>
+      <Route element={<LayoutPrincipal />}>
+      <Route path="/sin-permisos" element={<PaginaSinPermisos />} />
+        <Route path="/dashboard" element={<PaginaDashboard />} />
+        <Route path="/tickets" element={<PaginaTickets />} />
+        <Route path="/tickets/nuevo" element={<PaginaNuevoTicket />} />
+        <Route path="/tickets/:id" element={<PaginaDetalleTicket />} />
+        </Route>
+      </Route>
+
+      <Route element={<RutaProtegida allowedRoles={["ADMIN"]} />}>
+        <Route path="/usuarios" element={<PaginaUsuarios />} />
+        <Route element={<LayoutPrincipal />}>
+        <Route path="/sin-permisos" element={<PaginaSinPermisos />} />
+          <Route element={<RutaProtegida allowedRoles={["ADMIN", "AGENTE"]} />}>
+            <Route path="/metricas" element={<PaginaMetricas />} />
+          </Route>
         <Route element={<LayoutPrincipal />}>
           <Route path="/dashboard" element={<PaginaDashboard />} />
           <Route path="/tickets" element={<PaginaTickets />} />
@@ -40,7 +58,7 @@ function App() {
       </Route>
 
       <Route path="/" element={<Navigate to="/dashboard" replace />} />
-      <Route path="*" element={<Navigate to="/dashboard" replace />} />
+      <Route path="*" element={<Pagina404 />} />
     </Routes>
   );
 }
