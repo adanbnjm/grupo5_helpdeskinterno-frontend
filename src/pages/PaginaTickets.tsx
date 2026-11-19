@@ -1,4 +1,3 @@
-import { useEffect, useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { ticketService } from '../services/ticketService';
 import { useAuthStore } from '../store/useAuthStore';
@@ -7,11 +6,7 @@ import { BadgeEstado, BadgePrioridad } from '../componentes/Tickets/Badges';
 import type { MetaPaginacion, Ticket } from '../types/tickets';
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
-import { ticketService } from "../services/ticketService";
-import { useAuthStore } from "../store/useAuthStore";
-import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
-import type { MetaPaginacion, Ticket } from "../types/tickets";
-import { Link } from "react-router-dom";
+
 
 const LIMITE = 10;
 
@@ -75,7 +70,6 @@ export const PaginaTickets = () => {
   }, [aviso, navigate, location.pathname]);
 
   const esEmpleado = user?.rol === 'EMPLEADO';
-  const esEmpleado = user?.rol === "EMPLEADO";
   const totalPaginas = meta?.totalPages ?? 1;
 
   return (
@@ -207,6 +201,7 @@ I     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
           </div>
         )}
       </div>
+    </div>
     </div>
   );
 };

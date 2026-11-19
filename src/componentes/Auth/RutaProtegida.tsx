@@ -17,8 +17,9 @@ export const RutaProtegida = ({ allowedRoles }: RutaProtegidaProps) => {
     const hasPermission = allowedRoles.map((r) => r.toUpperCase()).includes(userRole);
 
     if (!hasPermission) {
-      return <Navigate to="/login" replace />;
-    }}
+      return <Navigate to="/sin-permisos" replace />;
+    }
+  }
 
   return <Outlet />;
 };
