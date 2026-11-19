@@ -7,6 +7,14 @@ import type { MetaPaginacion, Ticket } from '../types/tickets';
 import { useEffect, useState } from "react";
 import { AxiosError } from "axios";
 
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { ticketService } from "../services/ticketService";
+import { useAuthStore } from "../store/useAuthStore";
+import { obtenerMensajeError } from "../lib/errores";
+import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
+import type { MetaPaginacion, Ticket } from "../types/tickets";
+import { AxiosError } from "axios";
 
 const LIMITE = 10;
 
@@ -46,7 +54,9 @@ export const PaginaTickets = () => {
         setTickets(respuesta.data);
         setMeta(respuesta.meta);
       } catch (err) {
-        setError(obtenerMensajeError(err, 'No se pudieron cargar los tickets.'));
+        setError(
+          obtenerMensajeError(err, "No se pudieron cargar los tickets."),
+        );
         const e = err as AxiosError<{ message?: string | string[] }>;
         const mensaje = e.response?.data?.message;
         setError(
@@ -69,36 +79,31 @@ export const PaginaTickets = () => {
     return () => clearTimeout(t);
   }, [aviso, navigate, location.pathname]);
 
-  const esEmpleado = user?.rol === 'EMPLEADO';
+const esEmpleado = user?.rol === 'EMPLEADO';
+  const esEmpleado = user?.rol === "EMPLEADO";
   const totalPaginas = meta?.totalPages ?? 1;
 
   return (
     <div>
       <div className="max-w-6xl mx-auto">
-I     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
+        <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-slate-800">
-              {esEmpleado ? 'Mis tickets' : 'Todos los tickets'}
+              {esEmpleado ? "Mis tickets" : "Todos los tickets"}
             </h1>
             <p className="text-sm text-slate-500 mt-1">
-              {meta ? `${meta.total} ticket${meta.total === 1 ? '' : 's'} en total` : '\u00a0'}
+              {meta
+                ? `${meta.total} ticket${meta.total === 1 ? "" : "s"} en total`
+                : "\u00a0"}
             </p>
           </div>
+
           <Link
             to="/tickets/nuevo"
             className="px-4 py-2.5 bg-blue-600 hover:bg-blue-700 text-white text-sm font-semibold rounded-lg shadow-sm transition"
           >
             + Nuevo ticket
           </Link>
-        <div className="mb-6">
-          <h1 className="text-2xl font-bold text-slate-800">
-            {esEmpleado ? "Mis tickets" : "Todos los tickets"}
-          </h1>
-          <p className="text-sm text-slate-500 mt-1">
-            {meta
-              ? `${meta.total} ticket${meta.total === 1 ? "" : "s"} en total`
-              : "\u00a0"}
-          </p>
         </div>
 
         {aviso && (
@@ -141,17 +146,18 @@ I     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                     >
                       <td className="px-4 py-3 text-slate-500">{t.id}</td>
                       <td className="px-4 py-3 font-medium text-slate-800">
-                        {
-                          <Link
-                            to={`/tickets/${t.id}/comentarios`}
-                            className="text-blue-700 hover:underline"
-                          >
-                            {t.titulo}
-                          </Link>
-                        }
+                        <Link
+                          to={`/tickets/${t.id}/comentarios`}
+                          onClick={(evento) => evento.stopPropagation()}
+                          className="text-blue-700 hover:underline"
+                        >
+                          {t.titulo}
+                        </Link>
                       </td>
                       <td className="px-4 py-3 text-slate-600">
-                        {t.categoria?.nombre ?? categorias[t.categoriaId] ?? `#${t.categoriaId}`}
+                        {t.categoria?.nombre ??
+                          categorias[t.categoriaId] ??
+                          `#${t.categoriaId}`}
                       </td>
                       <td className="px-4 py-3">
                         <BadgePrioridad prioridad={t.prioridad} />
@@ -161,12 +167,11 @@ I     <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
                       </td>
                       <td className="px-4 py-3 text-slate-600">
                         {t.agente?.nombre ??
-                          (t.agenteId ? `Agente #${t.agenteId}` : <span className="text-slate-400">Sin asignar</span>)}
-                        {t.agenteId ? (
-                          `Agente #${t.agenteId}`
-                        ) : (
-                          <span className="text-slate-400">Sin asignar</span>
-                        )}
+                          (t.agenteId ? (
+                            `Agente #${t.agenteId}`
+                          ) : (
+                            <span className="text-slate-400">Sin asignar</span>
+                          ))}
                       </td>
                       <td className="px-4 py-3 text-slate-500">
                         {new Date(t.creadoEn).toLocaleDateString("es-AR")}
