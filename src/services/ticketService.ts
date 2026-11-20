@@ -1,5 +1,6 @@
 import { api } from '../lib/axios';
 import type {
+  ActualizarTicketDto,
   Categoria,
   CrearTicketDto,
   RespuestaApi,
@@ -25,6 +26,17 @@ export const ticketService = {
   crear: async (dto: CrearTicketDto): Promise<Ticket> => {
     const { data } = await api.post<RespuestaApi<Ticket>>('/tickets', dto);
     return data.data;
+  },
+
+  // ADMIN y AGENTE cambian el estado; solo ADMIN reasigna agente, prioridad o categoría
+  actualizar: async (id: number, dto: ActualizarTicketDto): Promise<Ticket> => {
+    const { data } = await api.patch<RespuestaApi<Ticket>>(`/tickets/${id}`, dto);
+    return data.data;
+  },
+
+  // Solo ADMIN (el backend lo valida)
+  eliminar: async (id: number): Promise<void> => {
+    await api.delete(`/tickets/${id}`);
   },
 
   listarCategorias: async (): Promise<Categoria[]> => {

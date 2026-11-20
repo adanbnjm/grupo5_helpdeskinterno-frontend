@@ -32,6 +32,11 @@ const Dato = ({
 
 export const PaginaDetalleTicket = () => {
   const { id } = useParams();
+  const navigate = useNavigate();
+  const rol = useAuthStore((state) => state.user?.rol?.toUpperCase());
+  const puedeGestionar = rol === 'ADMIN' || rol === 'AGENTE';
+  // Se incrementa después de guardar cambios para volver a pedir el ticket actualizado
+  const [version, setVersion] = useState(0);
   const idNumero = Number(id);
   const idValido = Number.isInteger(idNumero) && idNumero > 0;
 
@@ -49,7 +54,7 @@ export const PaginaDetalleTicket = () => {
     let activo = true;
     ticketService
       .obtener(idNumero)
-      .then((t) => activo && setResultado({ id: idNumero, ticket: t }))
+      .then((t) => activo && setResultado({ id: idNumero, ticket: t, version }))
       // 404 = no existe o es de otro empleado (el backend no distingue, a propósito)
       .catch(
         (err) =>
@@ -65,6 +70,7 @@ export const PaginaDetalleTicket = () => {
   }, [idNumero, idValido, revision]);
 
   const actual = resultado?.id === idNumero ? resultado : null;
+  // Al recargar después de guardar, se sigue mostrando el ticket anterior hasta que llega el nuevo
   const cargando = idValido && !actual;
   const ticket = actual?.ticket ?? null;
   const error = !idValido
@@ -145,7 +151,20 @@ export const PaginaDetalleTicket = () => {
               </aside>
             </div>
 
-            {/* US-17 y US-18: acá van el cambio de estado, la asignación de agente y eliminar */}
+            {puedeGestionar && (
+              <div className="mt-6 lg:w-1/3 lg:ml-auto">
+                <GestionTicket
+                  // key: al recargar el ticket, el formulario arranca con los valores nuevos
+                  key={`${ticket.id}-${ticket.actualizadoEn}`}
+                  ticket={ticket}
+                  esAdmin={rol === 'ADMIN'}
+                  onActualizado={() => setVersion((v) => v + 1)}
+                  onEliminado={() =>
+                    navigate('/tickets', { state: { mensaje: `Ticket #${ticket.id} eliminado.` } })
+                  }
+                />
+              </div>
+            )}
 
             <div className="mt-6">
               <HiloComentarios key={ticket.id} ticketId={ticket.id} />

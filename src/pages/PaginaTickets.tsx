@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
+
 import { ticketService } from "../services/ticketService";
 import { useAuthStore } from "../store/useAuthStore";
 import { obtenerMensajeError } from "../lib/errores";
 import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
+
 import type { MetaPaginacion, Ticket } from "../types/tickets";
 import { AxiosError } from "axios";
 import { useNotificacionesStore } from "../store/useNotificacionesStore";
@@ -51,13 +53,6 @@ export const PaginaTickets = () => {
         setError(
           obtenerMensajeError(err, "No se pudieron cargar los tickets."),
         );
-        const e = err as AxiosError<{ message?: string | string[] }>;
-        const mensaje = e.response?.data?.message;
-        setError(
-          Array.isArray(mensaje)
-            ? mensaje[0]
-            : mensaje || "No se pudieron cargar los tickets.",
-        );
       } finally {
         setCargando(false);
       }
@@ -74,6 +69,7 @@ export const PaginaTickets = () => {
   }, [aviso, navigate, location.pathname]);
 
   const esEmpleado = user?.rol === "EMPLEADO";
+
   const totalPaginas = meta?.totalPages ?? 1;
 
   return (
