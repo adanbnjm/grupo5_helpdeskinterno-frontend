@@ -20,7 +20,7 @@ const estilosPrioridad: Record<Prioridad, string> = {
   ALTA: 'bg-red-50 text-red-700 border-red-200',
 };
 
-const base = 'inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold border';
+const base = 'ticket-badge inline-block px-2.5 py-0.5 rounded-full text-xs font-semibold border';
 
 export const BadgeEstado = ({ estado }: { estado: EstadoTicket }) => (
   <span className={`${base} ${estilosEstado[estado]}`}>{textoEstado[estado]}</span>

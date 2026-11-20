@@ -90,7 +90,7 @@ export const PaginaTickets = () => {
 
   return (
     <div>
-      <div className="max-w-6xl mx-auto">
+      <div className="tickets-page max-w-6xl mx-auto">
         <div className="mb-6 flex flex-wrap items-end justify-between gap-3">
           <div>
             <h1 className="text-2xl font-bold text-slate-800">

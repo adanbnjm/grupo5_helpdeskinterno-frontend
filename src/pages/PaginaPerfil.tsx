@@ -37,7 +37,7 @@ export const PaginaPerfil = () => {
 
   return (
     <section
-      className="mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-6"
+      className="profile-panel mx-auto max-w-2xl rounded-xl border border-slate-200 bg-white p-6"
       aria-busy={cargando}
     >
       <h1 className="text-2xl font-semibold">Mi perfil</h1>

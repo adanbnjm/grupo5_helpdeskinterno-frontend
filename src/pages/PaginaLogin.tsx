@@ -1,3 +1,4 @@
+import { MarcoAcceso } from "../componentes/Layout/MarcoAcceso";
 import { useState } from "react";
 import type { FormEvent } from "react";
 import { Link, useNavigate } from "react-router-dom";
@@ -19,9 +20,9 @@ export const PaginaLogin = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-lg p-8 border border-slate-200">
-        <div className="mb-8 text-center">
+    <MarcoAcceso>
+      <div className="access-form-content">
+        <div className="mb-8">
           <h1 className="text-2xl font-bold text-slate-800">HelpDesk Login</h1>
           <p className="text-sm text-slate-500 mt-1">
             Inicie sesión para poder ingresar
@@ -96,6 +97,6 @@ export const PaginaLogin = () => {
           </Link>
         </p>
       </div>
-    </div>
+    </MarcoAcceso>
   );
 };

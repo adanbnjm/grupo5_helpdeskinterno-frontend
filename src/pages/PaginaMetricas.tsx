@@ -111,7 +111,7 @@ export const PaginaMetricas = () => {
         </p>
       ) : metricas ? (
         <>
-          <div className="mb-6 grid gap-4 sm:grid-cols-2">
+          <div className="metric-summary mb-6 grid gap-4 sm:grid-cols-2">
             <article className="rounded-xl border border-slate-200 bg-white p-6">
               <h2 className="text-sm font-medium text-slate-600">
                 Total de tickets
@@ -149,7 +149,7 @@ export const PaginaMetricas = () => {
                       margin={{ top: 10, right: 10, left: 0, bottom: 10 }}
                       accessibilityLayer
                     >
-                      <CartesianGrid strokeDasharray="3 3" vertical={false} />
+                      <CartesianGrid stroke="#e7ebf0" strokeDasharray="3 3" vertical={false} />
                       <XAxis
                         dataKey="nombre"
                         tick={{ fontSize: 11 }}
@@ -160,7 +160,7 @@ export const PaginaMetricas = () => {
                       <Bar
                         dataKey="total"
                         name="Tickets"
-                        fill="#2563eb"
+                        fill="#315dca"
                         radius={[4, 4, 0, 0]}
                       />
                     </BarChart>
@@ -224,7 +224,7 @@ export const PaginaMetricas = () => {
                           <Bar
                             dataKey="total"
                             name="Tickets"
-                            fill="#0f766e"
+                            fill="#4c8581"
                             radius={[0, 4, 4, 0]}
                           />
                         </BarChart>

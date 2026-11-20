@@ -103,7 +103,7 @@ export const HiloComentarios = ({ ticketId }: Props) => {
   };
 
   return (
-    <section className="rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
+    <section className="conversation-panel rounded-xl border border-slate-200 bg-white p-4 sm:p-6">
       <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         <h2 className="text-lg font-semibold">Conversación</h2>
         <button

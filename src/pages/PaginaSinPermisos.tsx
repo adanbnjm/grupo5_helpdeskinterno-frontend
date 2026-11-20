@@ -6,7 +6,7 @@ export const PaginaSinPermisos = () => {
 
   return (
     <div className="min-h-[70vh] flex items-center justify-center p-4">
-      <div className="bg-white max-w-md w-full p-8 rounded-2xl shadow-sm border border-slate-200 text-center">
+      <div className="empty-state bg-white max-w-md w-full p-8 rounded-2xl shadow-sm border border-slate-200 text-center">
         <div className="w-12 h-12 rounded-full bg-amber-100 text-amber-600 flex items-center justify-center mx-auto mb-4 font-bold text-lg">
           !
         </div>
