@@ -13,7 +13,7 @@ import { PaginaComentarios } from "./pages/PaginaComentarios";
 import { PaginaSinPermisos } from "./pages/PaginaSinPermisos";
 import { Pagina404 } from "./pages/Pagina404";
 import { PaginaCategorias } from "./pages/PaginaCategorias";
-
+import { PaginaPerfil } from "./pages/PaginaPerfil";
 import { RutaProtegida } from "./componentes/Auth/RutaProtegida";
 import { LayoutPrincipal } from "./componentes/Layout/LayoutPrincipal";
 
@@ -29,6 +29,7 @@ function App() {
         <Route element={<LayoutPrincipal />}>
           <Route path="/sin-permisos" element={<PaginaSinPermisos />} />
           <Route path="/dashboard" element={<PaginaDashboard />} />
+          <Route path="/perfil" element={<PaginaPerfil />} />
           <Route path="/tickets" element={<PaginaTickets />} />
           <Route path="/tickets/nuevo" element={<PaginaNuevoTicket />} />
           <Route path="/tickets/:id" element={<PaginaDetalleTicket />} />
