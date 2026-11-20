@@ -18,7 +18,7 @@ export const PaginaTickets = () => {
   const [aviso, setAviso] = useState<string | null>(
     (location.state as { mensaje?: string } | null)?.mensaje ?? null,
   );
-
+  const [busqueda, setBusqueda] = useState("");
   const [tickets, setTickets] = useState<Ticket[]>([]);
   const [meta, setMeta] = useState<MetaPaginacion | null>(null);
   const [categorias, setCategorias] = useState<Record<number, string>>({});
@@ -68,6 +68,22 @@ export const PaginaTickets = () => {
 
   const totalPaginas = meta?.totalPages ?? 1;
 
+  const normalizar = (texto: string) =>
+    texto
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .trim();
+
+  const consulta = normalizar(busqueda);
+
+  const ticketsVisibles = tickets.filter((ticket) => {
+    const coincideTitulo = normalizar(ticket.titulo).includes(consulta);
+    const coincideId = String(ticket.id) === consulta.replace(/^#/, "");
+
+    return !consulta || coincideTitulo || coincideId;
+  });
+
   return (
     <div>
       <div className="max-w-6xl mx-auto">
@@ -97,6 +113,47 @@ export const PaginaTickets = () => {
           </div>
         )}
 
+        <div className="mb-4 rounded-xl border border-slate-200 bg-white p-4">
+          <label
+            htmlFor="buscar-ticket"
+            className="block text-sm font-medium text-slate-700"
+          >
+            Buscar en esta página
+          </label>
+
+          <div className="mt-2 flex gap-2">
+            <input
+              id="buscar-ticket"
+              type="search"
+              value={busqueda}
+              onChange={(evento) => setBusqueda(evento.target.value)}
+              placeholder="Título o ID del ticket"
+              aria-describedby="ayuda-busqueda"
+              className="min-w-0 flex-1 rounded-lg border border-slate-300 px-3 py-2 text-sm focus:outline-2 focus:outline-blue-600"
+            />
+
+            <button
+              type="button"
+              onClick={() => setBusqueda("")}
+              disabled={!busqueda}
+              className="rounded-lg border border-slate-300 px-3 py-2 text-sm hover:bg-slate-50 disabled:opacity-50"
+            >
+              Limpiar
+            </button>
+          </div>
+
+          <p id="ayuda-busqueda" className="mt-2 text-xs text-slate-500">
+            Busca únicamente entre los tickets de la página actual.
+          </p>
+
+          {!cargando && !error && (
+            <p role="status" className="mt-2 text-sm text-slate-600">
+              {ticketsVisibles.length} de {tickets.length} tickets de esta
+              página.
+            </p>
+          )}
+        </div>
+
         <div className="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
           {cargando ? (
             <p className="p-8 text-center text-slate-500">
@@ -104,9 +161,11 @@ export const PaginaTickets = () => {
             </p>
           ) : error ? (
             <p className="p-8 text-center text-red-600">{error}</p>
-          ) : tickets.length === 0 ? (
+          ) : ticketsVisibles.length === 0 ? (
             <p className="p-8 text-center text-slate-500">
-              No hay tickets para mostrar.
+              {consulta
+                ? "No hay coincidencias en esta página."
+                : "No hay tickets para mostrar."}
             </p>
           ) : (
             <div className="overflow-x-auto">
@@ -123,7 +182,7 @@ export const PaginaTickets = () => {
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-slate-100">
-                  {tickets.map((t) => (
+                  {ticketsVisibles.map((t) => (
                     <tr
                       key={t.id}
                       onClick={() => navigate(`/tickets/${t.id}`)}
