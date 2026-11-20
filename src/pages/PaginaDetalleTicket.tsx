@@ -25,7 +25,7 @@ const Dato = ({
   children: React.ReactNode;
 }) => (
   <div>
-    <dt className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+    <dt className="text-xs font-medium text-slate-500 tracking-normal">
       {etiqueta}
     </dt>
     <dd className="mt-1 text-sm text-slate-800">{children}</dd>
@@ -80,7 +80,7 @@ export const PaginaDetalleTicket = () => {
     : (actual?.error ?? null);
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:p-8">
+    <div className="page-content">
       <div className="max-w-4xl mx-auto">
         <Link to="/tickets" className="text-sm text-blue-600 hover:underline">
           ← Volver al listado

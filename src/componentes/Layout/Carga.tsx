@@ -1,7 +1,7 @@
 export const CargandoPagina = () => {
   return (
     <div
-      className="min-h-[60vh] flex flex-col items-center justify-center gap-3"
+      className="loading-state min-h-[60vh] flex flex-col items-center justify-center gap-3"
       role="status"
       aria-live="polite"
     >

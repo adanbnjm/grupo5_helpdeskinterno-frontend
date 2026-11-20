@@ -119,7 +119,7 @@ export const Notificaciones = () => {
         {avisos.map((aviso) => (
           <div
             key={aviso.id}
-            className="rounded-xl border border-blue-200 bg-white p-4 shadow-lg"
+            className="notification-card rounded-xl border border-blue-200 bg-white p-4 shadow-lg"
           >
             <div className="flex items-start justify-between gap-3">
               <p className="text-sm text-slate-800">{aviso.mensaje}</p>

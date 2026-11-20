@@ -109,7 +109,7 @@ export const PaginaCategorias = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:p-8">
+    <div className="page-content">
       <div className="max-w-6xl mx-auto">
         <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
           <div>

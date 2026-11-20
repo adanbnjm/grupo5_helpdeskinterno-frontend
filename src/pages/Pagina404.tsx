@@ -3,8 +3,8 @@ import { Link } from "react-router-dom";
 export const Pagina404 = () => {
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
-      <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
-        <p className="text-sm font-semibold uppercase tracking-wider text-red-600">
+      <div className="empty-state w-full max-w-md rounded-2xl border border-slate-200 bg-white p-8 text-center shadow-sm">
+        <p className="text-sm font-semibold tracking-normalr text-red-600">
           Error 404
         </p>
         <h1 className="mt-2 text-2xl font-bold text-slate-800">

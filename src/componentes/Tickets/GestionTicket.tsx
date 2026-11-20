@@ -92,7 +92,7 @@ export const GestionTicket = ({ ticket, esAdmin, onActualizado, onEliminado }: P
   };
 
   return (
-    <section className="bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
+    <section className="ticket-management bg-white rounded-2xl shadow-sm border border-slate-200 p-6 space-y-4">
       <h2 className="text-sm font-semibold text-slate-700">Gestión del ticket</h2>
 
       {error && (

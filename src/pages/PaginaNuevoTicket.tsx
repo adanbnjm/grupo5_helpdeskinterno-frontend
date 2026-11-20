@@ -89,7 +89,7 @@ export const PaginaNuevoTicket = () => {
     errores[campo] ? 'border-red-400' : 'border-slate-300';
 
   return (
-    <div className="min-h-screen bg-slate-100 p-4 sm:p-8">
+    <div className="page-content">
       <div className="max-w-2xl mx-auto">
         <Link to="/tickets" className="text-sm text-blue-600 hover:underline">
           ← Volver al listado

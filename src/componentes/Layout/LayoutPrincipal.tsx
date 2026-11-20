@@ -1,3 +1,4 @@
+import { Icono } from "./Icono";
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
@@ -64,7 +65,7 @@ export const LayoutPrincipal = () => {
   };
 
   return (
-    <div className="min-h-screen bg-slate-100 text-slate-900 lg:flex">
+    <div className="app-shell min-h-screen bg-slate-100 text-slate-900 lg:flex">
       <a
         href="#contenido-principal"
         className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-50 focus:rounded focus:bg-white focus:p-3"
@@ -72,7 +73,7 @@ export const LayoutPrincipal = () => {
         Saltar al contenido
       </a>
 
-      <div className="flex items-center justify-between bg-slate-900 px-4 py-3 text-white lg:hidden">
+      <div className="mobile-bar flex items-center justify-between bg-slate-900 px-4 py-3 text-white lg:hidden">
         <span className="font-semibold">Help Desk Interno</span>
         <button
           type="button"
@@ -89,12 +90,12 @@ export const LayoutPrincipal = () => {
         id="menu-principal"
         className={`${menuAbierto ? "block" : "hidden"} bg-slate-900 text-slate-100 lg:sticky lg:top-0 lg:block lg:h-screen lg:w-64 lg:shrink-0 lg:overflow-y-auto`}
       >
-        <div className="hidden border-b border-slate-700 px-6 py-6 lg:block">
-          <p className="text-lg font-semibold">Help Desk Interno</p>
+        <div className="sidebar-brand hidden border-b border-slate-700 px-6 py-6 lg:block">
+          <div className="brand"><span className="brand-mark"><Icono nombre="soporte" /></span><span>Help Desk<strong>Interno</strong></span></div>
           <p className="mt-1 text-sm text-slate-400">Centro de soporte</p>
         </div>
 
-        <nav aria-label="Navegación principal" className="space-y-2 p-4">
+        <nav aria-label="Navegación principal" className="sidebar-nav space-y-2 p-4">
           {enlacesVisibles.map((enlace) => (
             <NavLink
               key={enlace.ruta}
@@ -102,7 +103,7 @@ export const LayoutPrincipal = () => {
               onClick={() => setMenuEnRuta(null)}
               className={({ isActive }) =>
                 [
-                  "block rounded-lg px-4 py-3 text-sm font-medium",
+                  "nav-item rounded-lg px-4 py-3 text-sm font-medium",
                   "focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-white",
                   isActive
                     ? "bg-blue-600 text-white"
@@ -110,37 +111,39 @@ export const LayoutPrincipal = () => {
                 ].join(" ")
               }
             >
+              <Icono nombre={enlace.ruta === "/dashboard" ? "inicio" : enlace.ruta.slice(1)} />
               {enlace.ruta === "/tickets" && rol === "EMPLEADO"
                 ? "Mis tickets"
                 : enlace.texto}
             </NavLink>
           ))}
         </nav>
+        <div className="sidebar-foot"><span>Espacio de trabajo</span><strong>Grupo 5 · FUNVAL</strong></div>
       </aside>
 
       <div className="min-w-0 flex-1">
-        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
-          <div className="min-w-0">
+        <header className="app-header flex flex-wrap items-center justify-between gap-3 border-b border-slate-200 bg-white px-4 py-4 sm:px-6">
+          <div className="header-identity min-w-0"><span className="user-avatar" aria-hidden="true">{(user?.nombre || user?.email || "U").slice(0, 1).toUpperCase()}</span><div>
             <p className="break-words font-semibold">
               {user?.nombre || user?.email || "Usuario"}
             </p>
             <p className="text-sm text-slate-500">
               {rol || "Rol no disponible"}
             </p>
-          </div>
+          </div></div>
 
           <button
             type="button"
             onClick={cerrarSesion}
-            className="rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
+            className="logout-button rounded-lg border border-slate-300 px-4 py-2 text-sm font-medium hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-blue-600"
           >
-            Cerrar sesión
+            <Icono nombre="salir" /> Cerrar sesión
           </button>
         </header>
 
         <Notificaciones />
 
-        <main id="contenido-principal" className="p-4 sm:p-6">
+        <main id="contenido-principal" className="workspace p-4 sm:p-6">
           {cargando ? <CargandoPagina /> : <Outlet />}
         </main>
       </div>
