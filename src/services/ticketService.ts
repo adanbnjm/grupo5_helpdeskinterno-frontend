@@ -3,6 +3,7 @@ import type {
   ActualizarTicketDto,
   Categoria,
   CrearTicketDto,
+  FiltrosTickets,
   RespuestaApi,
   Ticket,
   TicketsPaginados,
@@ -11,9 +12,13 @@ import type {
 
 export const ticketService = {
   // EMPLEADO recibe solo sus tickets; ADMIN y AGENTE reciben todos (lo filtra el backend)
-  listar: async (page = 1, limit = 10): Promise<TicketsPaginados> => {
+  // Los filtros vacíos no se mandan, así el backend devuelve todo como antes
+  listar: async (page = 1, limit = 10, filtros: FiltrosTickets = {}): Promise<TicketsPaginados> => {
+    const filtrosActivos = Object.fromEntries(
+      Object.entries(filtros).filter(([, valor]) => valor !== undefined && valor !== ''),
+    );
     const { data } = await api.get<RespuestaApi<TicketsPaginados>>('/tickets', {
-      params: { page, limit },
+      params: { page, limit, ...filtrosActivos },
     });
     return data.data;
   },
