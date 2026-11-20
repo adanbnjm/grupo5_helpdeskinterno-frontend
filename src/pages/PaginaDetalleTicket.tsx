@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import { GestionTicket } from "../componentes/Tickets/GestionTicket";
+import { useAuthStore } from "../store/useAuthStore";
 import { ticketService } from "../services/ticketService";
 import { obtenerMensajeError } from "../lib/errores";
 import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
@@ -34,7 +36,7 @@ export const PaginaDetalleTicket = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const rol = useAuthStore((state) => state.user?.rol?.toUpperCase());
-  const puedeGestionar = rol === 'ADMIN' || rol === 'AGENTE';
+  const puedeGestionar = rol === "ADMIN" || rol === "AGENTE";
   // Se incrementa después de guardar cambios para volver a pedir el ticket actualizado
   const [version, setVersion] = useState(0);
   const idNumero = Number(id);
@@ -54,7 +56,7 @@ export const PaginaDetalleTicket = () => {
     let activo = true;
     ticketService
       .obtener(idNumero)
-      .then((t) => activo && setResultado({ id: idNumero, ticket: t, version }))
+      .then((t) => activo && setResultado({ id: idNumero, ticket: t }))
       // 404 = no existe o es de otro empleado (el backend no distingue, a propósito)
       .catch(
         (err) =>
@@ -67,7 +69,7 @@ export const PaginaDetalleTicket = () => {
     return () => {
       activo = false;
     };
-  }, [idNumero, idValido, revision]);
+  }, [idNumero, idValido, revision, version]);
 
   const actual = resultado?.id === idNumero ? resultado : null;
   // Al recargar después de guardar, se sigue mostrando el ticket anterior hasta que llega el nuevo
@@ -157,10 +159,12 @@ export const PaginaDetalleTicket = () => {
                   // key: al recargar el ticket, el formulario arranca con los valores nuevos
                   key={`${ticket.id}-${ticket.actualizadoEn}`}
                   ticket={ticket}
-                  esAdmin={rol === 'ADMIN'}
+                  esAdmin={rol === "ADMIN"}
                   onActualizado={() => setVersion((v) => v + 1)}
                   onEliminado={() =>
-                    navigate('/tickets', { state: { mensaje: `Ticket #${ticket.id} eliminado.` } })
+                    navigate("/tickets", {
+                      state: { mensaje: `Ticket #${ticket.id} eliminado.` },
+                    })
                   }
                 />
               </div>

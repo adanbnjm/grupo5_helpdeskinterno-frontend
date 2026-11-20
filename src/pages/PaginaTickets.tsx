@@ -7,7 +7,7 @@ import { obtenerMensajeError } from "../lib/errores";
 import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
 
 import type { MetaPaginacion, Ticket } from "../types/tickets";
-import { AxiosError } from "axios";
+
 import { useNotificacionesStore } from "../store/useNotificacionesStore";
 
 const LIMITE = 10;
