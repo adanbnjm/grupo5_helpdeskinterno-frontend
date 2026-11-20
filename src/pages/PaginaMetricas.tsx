@@ -13,13 +13,14 @@ import {
   metricasService,
   type MetricasTickets,
 } from "../services/metricasService";
+import { useNotificacionesStore } from "../store/useNotificacionesStore";
 
 export const PaginaMetricas = () => {
   const [metricas, setMetricas] = useState<MetricasTickets | null>(null);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [intento, setIntento] = useState(0);
-
+  const revision = useNotificacionesStore((state) => state.revision);
   useEffect(() => {
     let activo = true;
 
@@ -62,7 +63,7 @@ export const PaginaMetricas = () => {
     return () => {
       activo = false;
     };
-  }, [intento]);
+  }, [intento, revision]);
 
   const porEstado = metricas
     ? [

@@ -6,6 +6,7 @@ import {
   type Comentario,
 } from "../../services/comentariosService";
 import { useAuthStore } from "../../store/useAuthStore";
+import { useNotificacionesStore } from "../../store/useNotificacionesStore";
 
 interface Props {
   ticketId: number;
@@ -36,7 +37,7 @@ export const HiloComentarios = ({ ticketId }: Props) => {
   const [aviso, setAviso] = useState("");
   const [intento, setIntento] = useState(0);
   const envioEnCurso = useRef(false);
-
+  const revision = useNotificacionesStore((state) => state.revision);
   useEffect(() => {
     let activo = true;
 
@@ -59,7 +60,7 @@ export const HiloComentarios = ({ ticketId }: Props) => {
     return () => {
       activo = false;
     };
-  }, [ticketId, intento]);
+  }, [ticketId, intento, revision]);
 
   const publicar = async (evento: FormEvent<HTMLFormElement>) => {
     evento.preventDefault();
