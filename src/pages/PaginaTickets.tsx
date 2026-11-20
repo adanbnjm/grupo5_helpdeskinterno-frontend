@@ -5,8 +5,13 @@ import { ticketService } from "../services/ticketService";
 import { useAuthStore } from "../store/useAuthStore";
 import { obtenerMensajeError } from "../lib/errores";
 import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
+import { FiltrosTickets } from "../componentes/Tickets/FiltrosTickets";
 
-import type { MetaPaginacion, Ticket } from "../types/tickets";
+import type {
+  FiltrosTickets as Filtros,
+  MetaPaginacion,
+  Ticket,
+} from "../types/tickets";
 
 import { useNotificacionesStore } from "../store/useNotificacionesStore";
 
@@ -25,6 +30,7 @@ export const PaginaTickets = () => {
   const [meta, setMeta] = useState<MetaPaginacion | null>(null);
   const [categorias, setCategorias] = useState<Record<number, string>>({});
   const [pagina, setPagina] = useState(1);
+  const [filtros, setFiltros] = useState<Filtros>({});
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -46,7 +52,7 @@ export const PaginaTickets = () => {
       setCargando(true);
       setError(null);
       try {
-        const respuesta = await ticketService.listar(pagina, LIMITE);
+        const respuesta = await ticketService.listar(pagina, LIMITE, filtros);
         setTickets(respuesta.data);
         setMeta(respuesta.meta);
       } catch (err) {
@@ -58,7 +64,13 @@ export const PaginaTickets = () => {
       }
     };
     cargar();
-  }, [pagina, revision]);
+  }, [pagina, revision, filtros]);
+
+  // Al cambiar un filtro se vuelve a la página 1
+  const cambiarFiltros = (nuevos: Filtros) => {
+    setFiltros(nuevos);
+    setPagina(1);
+  };
 
   // El aviso se borra solo a los 4 segundos y se limpia el state para que no reaparezca al recargar
   useEffect(() => {
@@ -117,6 +129,13 @@ export const PaginaTickets = () => {
           </div>
         )}
 
+        <FiltrosTickets
+          filtros={filtros}
+          categorias={categorias}
+          mostrarAgente={!esEmpleado}
+          onCambiar={cambiarFiltros}
+        />
+
         <div className="mb-4 rounded-xl border border-slate-200 bg-white p-4">
           <label
             htmlFor="buscar-ticket"
@@ -169,7 +188,9 @@ export const PaginaTickets = () => {
             <p className="p-8 text-center text-slate-500">
               {consulta
                 ? "No hay coincidencias en esta página."
-                : "No hay tickets para mostrar."}
+                : Object.values(filtros).some((v) => v)
+                  ? "Ningún ticket coincide con los filtros."
+                  : "No hay tickets para mostrar."}
             </p>
           ) : (
             <div className="overflow-x-auto">

@@ -43,6 +43,16 @@ export interface ActualizarTicketDto {
   agenteId?: number; // solo ADMIN
 }
 
+// Filtros opcionales del listado (GET /tickets). Vacío = sin filtrar
+export interface FiltrosTickets {
+  estado?: EstadoTicket | '';
+  prioridad?: Prioridad | '';
+  categoriaId?: string;
+  agenteId?: string; // '0' = sin asignar
+  desde?: string; // AAAA-MM-DD
+  hasta?: string; // AAAA-MM-DD
+}
+
 export interface Categoria {
   id: number;
   nombre: string;
