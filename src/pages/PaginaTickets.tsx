@@ -8,6 +8,8 @@ import { BadgeEstado, BadgePrioridad } from "../componentes/Tickets/Badges";
 
 import type { MetaPaginacion, Ticket } from "../types/tickets";
 
+import { useNotificacionesStore } from "../store/useNotificacionesStore";
+
 const LIMITE = 10;
 
 export const PaginaTickets = () => {
@@ -25,6 +27,8 @@ export const PaginaTickets = () => {
   const [pagina, setPagina] = useState(1);
   const [cargando, setCargando] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const revision = useNotificacionesStore((state) => state.revision);
 
   // Las categorías se cargan una sola vez para mostrar el nombre en vez del ID
   useEffect(() => {
@@ -54,7 +58,7 @@ export const PaginaTickets = () => {
       }
     };
     cargar();
-  }, [pagina]);
+  }, [pagina, revision]);
 
   // El aviso se borra solo a los 4 segundos y se limpia el state para que no reaparezca al recargar
   useEffect(() => {

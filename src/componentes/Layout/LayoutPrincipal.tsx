@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { NavLink, Outlet, useLocation, useNavigate } from "react-router-dom";
 import { useAuthStore } from "../../store/useAuthStore";
+import { Notificaciones } from "../Notificaciones/Notificaciones";
 import { CargandoPagina } from "./Carga";
 
 const enlaces = [
@@ -131,6 +132,8 @@ export const LayoutPrincipal = () => {
             Cerrar sesión
           </button>
         </header>
+
+        <Notificaciones />
 
         <main id="contenido-principal" className="p-4 sm:p-6">
           {cargando ? <CargandoPagina /> : <Outlet />}
