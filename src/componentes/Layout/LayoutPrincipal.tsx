@@ -5,6 +5,11 @@ import { CargandoPagina } from "./Carga";
 
 const enlaces = [
   {
+    ruta: "/perfil",
+    texto: "Mi perfil",
+    roles: ["ADMIN", "AGENTE", "EMPLEADO"],
+  },
+  {
     ruta: "/dashboard",
     texto: "Inicio",
     roles: ["ADMIN", "AGENTE", "EMPLEADO"],
