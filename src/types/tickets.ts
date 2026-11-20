@@ -35,6 +35,14 @@ export interface CrearTicketDto {
   agenteId?: number; // solo ADMIN puede enviarlo
 }
 
+// Lo que se manda a PATCH /tickets/:id (solo los campos que cambian)
+export interface ActualizarTicketDto {
+  estado?: EstadoTicket;
+  prioridad?: Prioridad;
+  categoriaId?: number;
+  agenteId?: number; // solo ADMIN
+}
+
 export interface Categoria {
   id: number;
   nombre: string;
